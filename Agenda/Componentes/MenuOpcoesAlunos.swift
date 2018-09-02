@@ -13,6 +13,7 @@ enum MenuActionSheetAlunos {
     case ligacao
     case waze
     case mapa
+    case abrirPaginaWeb
 }
 
 class MenuOpcoesAlunos: NSObject {
@@ -35,6 +36,11 @@ class MenuOpcoesAlunos: NSObject {
             completion(.mapa);
         }
         menu.addAction(mapa);
+        let abrirPaginaWeb = UIAlertAction(title: "abrir pagina Web", style: .default) { (acao) in
+            completion(.abrirPaginaWeb);
+        }
+        menu.addAction(abrirPaginaWeb);
+        
         let cancelar = UIAlertAction(title: "cancelar", style: .cancel, handler: nil);
         menu.addAction(cancelar);
         
