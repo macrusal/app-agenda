@@ -9,7 +9,7 @@
 import UIKit
 import MapKit
 
-class MapaViewController: UIViewController {
+class MapaViewController: UIViewController, CLLocationManagerDelegate {
 
     // MARK: - IBOutlet
     
@@ -18,17 +18,37 @@ class MapaViewController: UIViewController {
     // MARK: - Variaveis
     
     var aluno:Aluno?;
+    lazy var gerenciadoLocalizacao = CLLocationManager();
     
     // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad();
         self.localizacaoInicial();
-        self.localizarAluno();
         self.navigationItem.title = getTitulo();
+        self.verificaLocalizacaoUsuario();
     }
     
     // MARK: - Metodos
+    
+    func verificaLocalizacaoUsuario() {
+        if CLLocationManager.locationServicesEnabled() {
+            switch CLLocationManager.authorizationStatus() {
+            case .authorizedWhenInUse:
+                let botao = Localizacao().configuraBotaoLocalizacaoAtual(mapa: mapa);
+                mapa.addSubview(botao);
+                gerenciadoLocalizacao.startUpdatingLocation();
+                break;
+            case .notDetermined:
+                gerenciadoLocalizacao.requestWhenInUseAuthorization();
+                break;
+            case .denied:
+                break;
+            default:
+                break;
+            }
+        }
+    }
   
     func configuraPino(_ titulo:String, localizacao:CLPlacemark) -> MKPointAnnotation {
         let pino = MKPointAnnotation();
@@ -44,6 +64,7 @@ class MapaViewController: UIViewController {
             let regiao = MKCoordinateRegionMakeWithDistance(pino.coordinate, 5000, 5000);
             self.mapa.setRegion(regiao, animated: true);
             self.mapa.addAnnotation(pino);
+            self.localizarAluno();
         }
     }
     
@@ -52,6 +73,7 @@ class MapaViewController: UIViewController {
             Localizacao().converterEnderecoEmCoordenadas(aluno.endereco!) { (localizacaoEncontrada) in
                 let pino = self.configuraPino(aluno.nome!, localizacao: localizacaoEncontrada);
                 self.mapa.addAnnotation(pino);
+                self.mapa.showAnnotations(self.mapa.annotations, animated: true);
             }
         }
     }
@@ -60,4 +82,16 @@ class MapaViewController: UIViewController {
         return "Localizar Contatos";
     }
     
+    //MARK: - CLLocationManagerDelegate
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .authorizedWhenInUse:
+            let botao = Localizacao().configuraBotaoLocalizacaoAtual(mapa: mapa);
+            mapa.addSubview(botao);
+            gerenciadoLocalizacao.startUpdatingLocation();
+            break;
+        default:
+            break;
+        }
+    }
 }

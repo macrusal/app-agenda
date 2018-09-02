@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -53,11 +54,18 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Agenda" id="aoB-Jw-lAm">
                         <barButtonItem key="backBarButtonItem" title=" " id="M57-Hv-I3X"/>
-                        <barButtonItem key="leftBarButtonItem" systemItem="bookmarks" id="dzi-1s-s3a">
-                            <connections>
-                                <action selector="buttonCalcularMedia:" destination="Qhi-kM-lyB" id="dlb-OT-usT"/>
-                            </connections>
-                        </barButtonItem>
+                        <leftBarButtonItems>
+                            <barButtonItem systemItem="bookmarks" id="dzi-1s-s3a">
+                                <connections>
+                                    <action selector="buttonCalcularMedia:" destination="Qhi-kM-lyB" id="dlb-OT-usT"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem systemItem="search" id="m8u-nO-szZ">
+                                <connections>
+                                    <action selector="buttonLocalizacaoGeral:" destination="Qhi-kM-lyB" id="4uZ-41-FaC"/>
+                                </connections>
+                            </barButtonItem>
+                        </leftBarButtonItems>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="4cp-jd-Mnv">
                             <connections>
                                 <segue destination="ZY7-NM-Hup" kind="show" id="tio-sZ-JlU"/>

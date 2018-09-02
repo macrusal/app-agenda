@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import MapKit
 
 class Localizacao: NSObject {
 
@@ -18,5 +19,12 @@ class Localizacao: NSObject {
                 local(localizacao);
             }
         }
+    }
+    
+    func configuraBotaoLocalizacaoAtual(mapa: MKMapView) -> MKUserTrackingButton {
+        let botao = MKUserTrackingButton(mapView: mapa);
+        botao.frame.origin.x = 10;
+        botao.frame.origin.y = 10;
+        return botao;
     }
 }
